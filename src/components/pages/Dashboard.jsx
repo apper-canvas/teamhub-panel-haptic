@@ -1,19 +1,25 @@
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import StatCard from "@/components/molecules/StatCard"
-import Loading from "@/components/ui/Loading"
-import Error from "@/components/ui/Error"
-import ApperIcon from "@/components/ApperIcon"
-import { employeeService } from "@/services/api/employeeService"
-import { departmentService } from "@/services/api/departmentService"
-import { attendanceService } from "@/services/api/attendanceService"
-
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import ApperIcon from "@/components/ApperIcon";
+import EmployeeModal from "@/components/organisms/EmployeeModal";
+import StatCard from "@/components/molecules/StatCard";
+import Error from "@/components/ui/Error";
+import Loading from "@/components/ui/Loading";
+import Attendance from "@/components/pages/Attendance";
+import Employees from "@/components/pages/Employees";
+import departmentsData from "@/services/mockData/departments.json";
+import employeesData from "@/services/mockData/employees.json";
+import attendanceData from "@/services/mockData/attendance.json";
+import { attendanceService } from "@/services/api/attendanceService";
+import { departmentService } from "@/services/api/departmentService";
+import { employeeService } from "@/services/api/employeeService";
 const Dashboard = () => {
   const [employees, setEmployees] = useState([])
   const [departments, setDepartments] = useState([])
   const [attendance, setAttendance] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [isEmployeeModalOpen, setIsEmployeeModalOpen] = useState(false)
 
   useEffect(() => {
     loadDashboardData()
@@ -34,12 +40,19 @@ const Dashboard = () => {
     } catch (error) {
       setError('Failed to load dashboard data')
     } finally {
-      setLoading(false)
+setLoading(false)
     }
+  }
+  const handleAddEmployee = () => {
+    setIsEmployeeModalOpen(true)
+  }
+
+  const handleEmployeeSaved = (savedEmployee) => {
+    setEmployees(prev => [...prev, savedEmployee])
   }
 
   if (loading) return <Loading type="dashboard" />
-  if (error) return <Error message={error} onRetry={loadDashboardData} />
+if (error) return <Error message={error} onRetry={loadDashboardData} />
 
   const activeEmployees = employees.filter(emp => emp.status === 'Active').length
   const onLeaveEmployees = employees.filter(emp => emp.status === 'On Leave').length
@@ -48,7 +61,8 @@ const Dashboard = () => {
     return att.date === today && att.status === 'Present'
   }).length
 
-  const recentEmployees = employees.slice(0, 5)
+  // Get recent employees (last 5 added)
+  const recentEmployees = employees.slice(-5).reverse()
 
   return (
     <div className="space-y-8">
@@ -178,8 +192,11 @@ const Dashboard = () => {
         className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm"
       >
         <h3 className="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-4 rounded-lg border-2 border-dashed border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors cursor-pointer">
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div 
+            onClick={handleAddEmployee}
+            className="p-4 rounded-lg border-2 border-dashed border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors cursor-pointer"
+          >
             <div className="flex items-center space-x-3">
               <div className="p-2 rounded-lg bg-primary-100">
                 <ApperIcon name="UserPlus" size={20} className="text-primary-600" />
@@ -226,8 +243,14 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-        </div>
+</div>
       </motion.div>
+      <EmployeeModal
+        isOpen={isEmployeeModalOpen}
+        onClose={() => setIsEmployeeModalOpen(false)}
+        employee={null}
+        onSave={handleEmployeeSaved}
+      />
     </div>
   )
 }
