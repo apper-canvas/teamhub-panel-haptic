@@ -1,0 +1,58 @@
+[
+  {
+    "Id": 1,
+    "name": "Engineering",
+    "managerId": "John Smith",
+    "description": "Responsible for software development, system architecture, and technical innovation. Our engineering team builds and maintains the core platform and develops new features.",
+    "employeeCount": 3
+  },
+  {
+    "Id": 2,
+    "name": "Product",
+    "managerId": "Sarah Johnson",
+    "description": "Drives product strategy, roadmap planning, and feature prioritization. Works closely with engineering and design to deliver exceptional user experiences.",
+    "employeeCount": 1
+  },
+  {
+    "Id": 3,
+    "name": "Design",
+    "managerId": "Michael Brown",
+    "description": "Creates intuitive user interfaces and engaging user experiences. Responsible for visual design, prototyping, and design system maintenance.",
+    "employeeCount": 2
+  },
+  {
+    "Id": 4,
+    "name": "Marketing",
+    "managerId": "Emily Davis",
+    "description": "Develops and executes marketing strategies to drive growth and brand awareness. Manages content creation, campaigns, and customer acquisition.",
+    "employeeCount": 1
+  },
+  {
+    "Id": 5,
+    "name": "Human Resources",
+    "managerId": "David Wilson",
+    "description": "Manages employee relations, recruitment, benefits administration, and organizational development. Ensures compliance with employment regulations.",
+    "employeeCount": 1
+  },
+  {
+    "Id": 6,
+    "name": "Finance",
+    "managerId": "Jessica Martinez",
+    "description": "Handles financial planning, budgeting, accounting, and financial reporting. Ensures fiscal responsibility and compliance with financial regulations.",
+    "employeeCount": 1
+  },
+  {
+    "Id": 7,
+    "name": "Sales",
+    "managerId": "Robert Anderson",
+    "description": "Drives revenue growth through customer acquisition and relationship management. Develops sales strategies and manages the sales pipeline.",
+    "employeeCount": 1
+  },
+  {
+    "Id": 8,
+    "name": "Support",
+    "managerId": "Christopher Thomas",
+    "description": "Provides excellent customer service and technical support. Handles customer inquiries, troubleshooting, and feedback collection.",
+    "employeeCount": 1
+  }
+]

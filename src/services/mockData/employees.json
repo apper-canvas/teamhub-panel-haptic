@@ -1,0 +1,172 @@
+[
+  {
+    "Id": 1,
+    "firstName": "John",
+    "lastName": "Smith",
+    "email": "john.smith@teamhub.com",
+    "phone": "+1 (555) 123-4567",
+    "role": "Software Engineer",
+    "department": "Engineering",
+    "startDate": "2023-01-15",
+    "status": "Active",
+    "photo": "",
+    "emergencyContact": {
+      "name": "Jane Smith",
+      "phone": "+1 (555) 987-6543",
+      "relationship": "Spouse"
+    }
+  },
+  {
+    "Id": 2,
+    "firstName": "Sarah",
+    "lastName": "Johnson",
+    "email": "sarah.johnson@teamhub.com",
+    "phone": "+1 (555) 234-5678",
+    "role": "Product Manager",
+    "department": "Product",
+    "startDate": "2022-11-08",
+    "status": "Active",
+    "photo": "",
+    "emergencyContact": {
+      "name": "Mike Johnson",
+      "phone": "+1 (555) 876-5432",
+      "relationship": "Spouse"
+    }
+  },
+  {
+    "Id": 3,
+    "firstName": "Michael",
+    "lastName": "Brown",
+    "email": "michael.brown@teamhub.com",
+    "phone": "+1 (555) 345-6789",
+    "role": "UX Designer",
+    "department": "Design",
+    "startDate": "2023-03-20",
+    "status": "Active",
+    "photo": "",
+    "emergencyContact": {
+      "name": "Lisa Brown",
+      "phone": "+1 (555) 765-4321",
+      "relationship": "Sister"
+    }
+  },
+  {
+    "Id": 4,
+    "firstName": "Emily",
+    "lastName": "Davis",
+    "email": "emily.davis@teamhub.com",
+    "phone": "+1 (555) 456-7890",
+    "role": "Marketing Specialist",
+    "department": "Marketing",
+    "startDate": "2022-09-12",
+    "status": "On Leave",
+    "photo": "",
+    "emergencyContact": {
+      "name": "Robert Davis",
+      "phone": "+1 (555) 654-3210",
+      "relationship": "Father"
+    }
+  },
+  {
+    "Id": 5,
+    "firstName": "David",
+    "lastName": "Wilson",
+    "email": "david.wilson@teamhub.com",
+    "phone": "+1 (555) 567-8901",
+    "role": "HR Manager",
+    "department": "Human Resources",
+    "startDate": "2021-07-01",
+    "status": "Active",
+    "photo": "",
+    "emergencyContact": {
+      "name": "Susan Wilson",
+      "phone": "+1 (555) 543-2109",
+      "relationship": "Mother"
+    }
+  },
+  {
+    "Id": 6,
+    "firstName": "Jessica",
+    "lastName": "Martinez",
+    "email": "jessica.martinez@teamhub.com",
+    "phone": "+1 (555) 678-9012",
+    "role": "Financial Analyst",
+    "department": "Finance",
+    "startDate": "2023-02-28",
+    "status": "Active",
+    "photo": "",
+    "emergencyContact": {
+      "name": "Carlos Martinez",
+      "phone": "+1 (555) 432-1098",
+      "relationship": "Spouse"
+    }
+  },
+  {
+    "Id": 7,
+    "firstName": "Robert",
+    "lastName": "Anderson",
+    "email": "robert.anderson@teamhub.com",
+    "phone": "+1 (555) 789-0123",
+    "role": "Sales Representative",
+    "department": "Sales",
+    "startDate": "2022-12-05",
+    "status": "Active",
+    "photo": "",
+    "emergencyContact": {
+      "name": "Mary Anderson",
+      "phone": "+1 (555) 321-0987",
+      "relationship": "Spouse"
+    }
+  },
+  {
+    "Id": 8,
+    "firstName": "Ashley",
+    "lastName": "Taylor",
+    "email": "ashley.taylor@teamhub.com",
+    "phone": "+1 (555) 890-1234",
+    "role": "DevOps Engineer",
+    "department": "Engineering",
+    "startDate": "2023-04-10",
+    "status": "Active",
+    "photo": "",
+    "emergencyContact": {
+      "name": "James Taylor",
+      "phone": "+1 (555) 210-9876",
+      "relationship": "Brother"
+    }
+  },
+  {
+    "Id": 9,
+    "firstName": "Christopher",
+    "lastName": "Thomas",
+    "email": "christopher.thomas@teamhub.com",
+    "phone": "+1 (555) 901-2345",
+    "role": "Customer Support",
+    "department": "Support",
+    "startDate": "2023-01-30",
+    "status": "Inactive",
+    "photo": "",
+    "emergencyContact": {
+      "name": "Patricia Thomas",
+      "phone": "+1 (555) 109-8765",
+      "relationship": "Mother"
+    }
+  },
+  {
+    "Id": 10,
+    "firstName": "Amanda",
+    "lastName": "Garcia",
+    "email": "amanda.garcia@teamhub.com",
+    "phone": "+1 (555) 012-3456",
+    "role": "Graphic Designer",
+    "department": "Design",
+    "startDate": "2022-08-18",
+    "status": "Active",
+    "photo": "",
+    "emergencyContact": {
+      "name": "Luis Garcia",
+      "phone": "+1 (555) 098-7654",
+      "relationship": "Father"
+    }
+  }
+]
