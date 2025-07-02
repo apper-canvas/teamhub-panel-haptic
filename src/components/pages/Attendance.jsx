@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { format, startOfWeek, endOfWeek } from "date-fns"
+import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, subMonths } from "date-fns"
 import { toast } from "react-toastify"
 import Button from "@/components/atoms/Button"
 import Badge from "@/components/atoms/Badge"
+import Input from "@/components/atoms/Input"
 import Loading from "@/components/ui/Loading"
 import Error from "@/components/ui/Error"
 import Empty from "@/components/ui/Empty"
@@ -18,7 +19,12 @@ const Attendance = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0])
-
+  const [showReportModal, setShowReportModal] = useState(false)
+  const [reportLoading, setReportLoading] = useState(false)
+  const [reportDateRange, setReportDateRange] = useState({
+    startDate: format(startOfMonth(subMonths(new Date(), 1)), 'yyyy-MM-dd'),
+    endDate: format(endOfMonth(subMonths(new Date(), 1)), 'yyyy-MM-dd')
+  })
   useEffect(() => {
     loadData()
   }, [])
@@ -62,9 +68,47 @@ const Attendance = () => {
     }
   }
 
-  const handleMarkAttendance = (employeeId, status) => {
+const handleMarkAttendance = (employeeId, status) => {
     toast.success(`Marked ${status} for employee`)
     // In a real app, this would update the attendance record
+  }
+
+  const handleGenerateReport = async () => {
+    if (!reportDateRange.startDate || !reportDateRange.endDate) {
+      toast.error('Please select both start and end dates')
+      return
+    }
+
+    if (new Date(reportDateRange.startDate) > new Date(reportDateRange.endDate)) {
+      toast.error('Start date must be before end date')
+      return
+    }
+
+    setReportLoading(true)
+    try {
+      const csvContent = await attendanceService.generateReport(
+        reportDateRange.startDate,
+        reportDateRange.endDate
+      )
+      
+      // Create and trigger download
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const link = document.createElement('a')
+      const url = URL.createObjectURL(blob)
+      link.setAttribute('href', url)
+      link.setAttribute('download', `attendance-report-${reportDateRange.startDate}-to-${reportDateRange.endDate}.csv`)
+      link.style.visibility = 'hidden'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      
+      toast.success('Attendance report downloaded successfully')
+      setShowReportModal(false)
+    } catch (error) {
+      toast.error('Failed to generate report')
+    } finally {
+      setReportLoading(false)
+    }
   }
 
   const todayStats = {
@@ -91,12 +135,12 @@ const Attendance = () => {
             onChange={(e) => setSelectedDate(e.target.value)}
             className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
-          <Button
-            onClick={() => toast.info('Export attendance report')}
+<Button
+            onClick={() => setShowReportModal(true)}
             variant="secondary"
           >
             <ApperIcon name="Download" size={16} className="mr-2" />
-            Export
+            Generate Report
           </Button>
         </div>
       </div>
@@ -267,7 +311,88 @@ const Attendance = () => {
             icon="Users"
           />
         )}
-      </div>
+</div>
+
+      {/* Report Generation Modal */}
+      {showReportModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="bg-white rounded-xl p-6 w-full max-w-md shadow-xl"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-semibold text-gray-900">Generate Attendance Report</h3>
+              <Button
+                onClick={() => setShowReportModal(false)}
+                variant="ghost"
+                size="sm"
+              >
+                <ApperIcon name="X" size={16} />
+              </Button>
+            </div>
+
+            <div className="space-y-4">
+              <Input
+                label="Start Date"
+                type="date"
+                value={reportDateRange.startDate}
+                onChange={(e) => setReportDateRange(prev => ({ ...prev, startDate: e.target.value }))}
+              />
+              
+              <Input
+                label="End Date"
+                type="date"
+                value={reportDateRange.endDate}
+                onChange={(e) => setReportDateRange(prev => ({ ...prev, endDate: e.target.value }))}
+              />
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-start">
+                  <ApperIcon name="Info" size={16} className="text-blue-600 mt-0.5 mr-2 flex-shrink-0" />
+                  <div className="text-sm text-blue-800">
+                    <p className="font-medium mb-1">Report will include:</p>
+                    <ul className="list-disc list-inside space-y-1 text-blue-700">
+                      <li>Employee attendance records</li>
+                      <li>Check-in and check-out times</li>
+                      <li>Attendance status summary</li>
+                      <li>Monthly statistics</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex space-x-3 mt-6">
+              <Button
+                onClick={() => setShowReportModal(false)}
+                variant="secondary"
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleGenerateReport}
+                disabled={reportLoading}
+                className="flex-1"
+              >
+                {reportLoading ? (
+                  <>
+                    <ApperIcon name="Loader2" size={16} className="mr-2 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <ApperIcon name="Download" size={16} className="mr-2" />
+                    Download CSV
+                  </>
+                )}
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   )
 }
