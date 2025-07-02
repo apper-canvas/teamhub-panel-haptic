@@ -55,9 +55,9 @@ const Departments = () => {
     let filtered = departments
 
     if (searchTerm) {
-      filtered = filtered.filter(dept =>
-        dept.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        dept.description.toLowerCase().includes(searchTerm.toLowerCase())
+filtered = filtered.filter(dept =>
+        (dept.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (dept.description || '').toLowerCase().includes(searchTerm.toLowerCase())
       )
     }
 

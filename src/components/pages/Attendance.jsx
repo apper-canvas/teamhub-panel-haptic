@@ -232,7 +232,7 @@ const handleMarkAttendance = (employeeId, status) => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {employees.map((employee, index) => {
+{employees.map((employee, index) => {
                   const employeeAttendance = filteredAttendance.find(att => att.employeeId === employee.Id)
                   
                   return (
@@ -253,7 +253,7 @@ const handleMarkAttendance = (employeeId, status) => {
                             />
                           ) : (
                             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white text-xs font-semibold mr-3">
-                              {employee.firstName.charAt(0)}{employee.lastName.charAt(0)}
+                              {employee.firstName?.charAt(0)}{employee.lastName?.charAt(0)}
                             </div>
                           )}
                           <div>

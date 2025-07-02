@@ -34,13 +34,13 @@ const Dashboard = () => {
         departmentService.getAll(),
         attendanceService.getAll()
       ])
-      setEmployees(employeeData)
-      setDepartments(departmentData)
-      setAttendance(attendanceData)
+      setEmployees(employeeData || [])
+      setDepartments(departmentData || [])
+      setAttendance(attendanceData || [])
     } catch (error) {
       setError('Failed to load dashboard data')
     } finally {
-setLoading(false)
+      setLoading(false)
     }
   }
   const handleAddEmployee = () => {
@@ -114,7 +114,7 @@ if (error) return <Error message={error} onRetry={loadDashboardData} />
           <div className="space-y-4">
             {recentEmployees.map((employee) => (
               <div key={employee.Id} className="flex items-center space-x-3">
-                {employee.photo ? (
+{employee.photo ? (
                   <img
                     src={employee.photo}
                     alt={`${employee.firstName} ${employee.lastName}`}
@@ -122,7 +122,7 @@ if (error) return <Error message={error} onRetry={loadDashboardData} />
                   />
                 ) : (
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white text-sm font-semibold">
-                    {employee.firstName.charAt(0)}{employee.lastName.charAt(0)}
+                    {employee.firstName?.charAt(0)}{employee.lastName?.charAt(0)}
                   </div>
                 )}
                 <div className="flex-1">
@@ -162,19 +162,19 @@ if (error) return <Error message={error} onRetry={loadDashboardData} />
                   <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
                     <ApperIcon name="Building2" size={16} className="text-white" />
                   </div>
-                  <div>
+<div>
                     <p className="font-medium text-gray-900">{department.name}</p>
-                    <p className="text-sm text-gray-600">{department.employeeCount} employees</p>
+                    <p className="text-sm text-gray-600">{department.employeeCount || 0} employees</p>
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-medium text-gray-900">
-                    {((department.employeeCount / employees.length) * 100).toFixed(0)}%
+                    {employees.length > 0 ? (((department.employeeCount || 0) / employees.length) * 100).toFixed(0) : 0}%
                   </p>
-                  <div className="w-16 h-2 bg-gray-200 rounded-full mt-1">
+                  <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-purple-500 to-purple-600 rounded-full"
-                      style={{ width: `${(department.employeeCount / employees.length) * 100}%` }}
+                      style={{ width: `${employees.length > 0 ? ((department.employeeCount || 0) / employees.length) * 100 : 0}%` }}
                     />
                   </div>
                 </div>
@@ -191,8 +191,8 @@ if (error) return <Error message={error} onRetry={loadDashboardData} />
         transition={{ delay: 0.2 }}
         className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm"
       >
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h3>
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<h3 className="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div 
             onClick={handleAddEmployee}
             className="p-4 rounded-lg border-2 border-dashed border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-colors cursor-pointer"
@@ -242,8 +242,8 @@ if (error) return <Error message={error} onRetry={loadDashboardData} />
                 <p className="text-sm text-gray-600">Export employee data</p>
               </div>
             </div>
-          </div>
 </div>
+        </div>
       </motion.div>
       <EmployeeModal
         isOpen={isEmployeeModalOpen}

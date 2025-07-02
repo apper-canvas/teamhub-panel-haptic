@@ -1,10 +1,13 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { toast } from "react-toastify"
 import Button from "@/components/atoms/Button"
 import Input from "@/components/atoms/Input"
 import Select from "@/components/atoms/Select"
+import Loading from "@/components/ui/Loading"
+import Error from "@/components/ui/Error"
 import ApperIcon from "@/components/ApperIcon"
+import { settingService } from "@/services/api/settingService"
 
 const Settings = () => {
   const [settings, setSettings] = useState({
@@ -24,6 +27,30 @@ const Settings = () => {
   })
 
   const [loading, setLoading] = useState(false)
+  const [initialLoading, setInitialLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [settingId, setSettingId] = useState(null)
+
+  useEffect(() => {
+    loadSettings()
+  }, [])
+
+  const loadSettings = async () => {
+    setInitialLoading(true)
+    setError('')
+    try {
+      const settingsData = await settingService.getAll()
+      if (settingsData && settingsData.length > 0) {
+        const setting = settingsData[0]
+        setSettings(setting)
+        setSettingId(setting.Id)
+      }
+    } catch (error) {
+      setError('Failed to load settings')
+    } finally {
+      setInitialLoading(false)
+    }
+  }
 
   const handleInputChange = (field, value) => {
     if (field.includes('.')) {
@@ -43,15 +70,30 @@ const Settings = () => {
   const handleSave = async () => {
     setLoading(true)
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      toast.success('Settings saved successfully!')
+      let result
+      if (settingId) {
+        result = await settingService.update(settingId, settings)
+      } else {
+        result = await settingService.create(settings)
+        if (result) {
+          setSettingId(result.Id)
+        }
+      }
+      
+      if (result) {
+        toast.success('Settings saved successfully!')
+      } else {
+        toast.error('Error saving settings. Please try again.')
+      }
     } catch (error) {
       toast.error('Error saving settings. Please try again.')
     } finally {
       setLoading(false)
     }
   }
+
+  if (initialLoading) return <Loading type="page" />
+  if (error) return <Error message={error} onRetry={loadSettings} />
 
   const timezoneOptions = [
     { value: 'UTC-8', label: 'Pacific Time (UTC-8)' },
